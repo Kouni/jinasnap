@@ -46,7 +46,7 @@
         
         GM_xmlhttpRequest({
             method: 'GET',
-            url: CONFIG.API_ENDPOINT + encodeURIComponent(currentUrl),
+            url: CONFIG.API_ENDPOINT + currentUrl,
             headers: {
                 'Accept': 'text/plain',
                 'User-Agent': 'Mozilla/5.0 (compatible; Jina-Reader-UserScript/2.1)'
