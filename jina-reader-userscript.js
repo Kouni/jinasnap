@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Jina Reader - Copy LLM Format
 // @namespace    https://github.com/kouni/jinasnap
-// @version      2.1.2
+// @version      2.1.3
 // @description  Copy current page as LLM-friendly format using Jina Reader API
 // @author       Kouni
 // @match        *://*/*
@@ -99,10 +99,36 @@
         }
         
         const trimmed = content.trim();
-        return trimmed.length >= CONFIG.MIN_CONTENT_LENGTH &&
-               !trimmed.includes('404') &&
-               !trimmed.includes('Access Denied') &&
-               !trimmed.includes('Page not found');
+        const lowerContent = trimmed.toLowerCase();
+        
+        // Check minimum length
+        if (trimmed.length < CONFIG.MIN_CONTENT_LENGTH) {
+            return false;
+        }
+        
+        // Only reject obvious error/protected pages
+        const rejectPatterns = [
+            'page not found',
+            'error 404',
+            'error 403', 
+            'error 500',
+            'access denied',
+            'unauthorized',
+            'forbidden',
+            'protected by recaptcha',
+            'captcha verification required',
+            'please verify you are human',
+            'authentication required',
+            'login required'
+        ];
+        
+        for (const pattern of rejectPatterns) {
+            if (lowerContent.includes(pattern)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
     
     // Debug logging
