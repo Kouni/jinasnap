@@ -19,7 +19,8 @@ Convert any webpage to LLM-friendly format using Jina Reader API with one-click 
 
 2. Install the script:
    - **Method 1**: [Install from Greasy Fork](https://greasyfork.org/en/scripts/541650-jina-reader-copy-llm-format) (Recommended)
-   - **Method 2**: Copy `jina-reader-userscript.js` content, create new userscript in your manager, paste and save
+   - **Method 2**: [Install from GitHub RAW](https://raw.githubusercontent.com/Kouni/jinasnap/main/jina-reader-userscript.js)
+   - **Method 3**: Copy `jina-reader-userscript.js` content, create new userscript in your manager, paste and save
 
 ## Usage
 
