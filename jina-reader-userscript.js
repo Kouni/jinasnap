@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Jina Reader - Copy LLM Format
 // @namespace    https://github.com/kouni/jinasnap
-// @version      2.1.0
+// @version      2.1.1
 // @description  Copy current page as LLM-friendly format using Jina Reader API
 // @author       Kouni
 // @match        *://*/*
