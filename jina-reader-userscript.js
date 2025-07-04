@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Jina Reader - Copy LLM Format
 // @namespace    https://github.com/kouni/jinasnap
-// @version      2.1.4
+// @version      2.1.5
 // @description  Copy current page as LLM-friendly format using Jina Reader API
 // @author       Kouni
 // @match        *://*/*
@@ -49,7 +49,7 @@
             url: CONFIG.API_ENDPOINT + currentUrl,
             headers: {
                 'Accept': 'text/plain',
-                'User-Agent': 'Mozilla/5.0 (compatible; Jina-Reader-UserScript/2.1)'
+                'User-Agent': 'Mozilla/5.0 (compatible; Jina-Reader-UserScript)'
             },
             timeout: CONFIG.TIMEOUT,
             onload: function(response) {
