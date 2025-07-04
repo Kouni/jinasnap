@@ -49,15 +49,6 @@ Convert any webpage to LLM-friendly format using Jina Reader API with one-click 
 - `GM_setClipboard` - Clipboard access
 - `GM_registerMenuCommand` - Context menu integration
 
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Menu item missing | Enable userscript, refresh page |
-| Request fails | Check connection, retry after rate limit |
-| Copy fails | Grant clipboard permissions |
-| Empty response | Verify page accessibility |
-
 ## Development
 
 **Stack**: Vanilla JavaScript, Greasemonkey API  
