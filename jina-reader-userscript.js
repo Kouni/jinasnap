@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Jina Reader - Copy LLM Format
 // @namespace    https://github.com/kouni/jinasnap
-// @version      2.1.3
+// @version      2.1.4
 // @description  Copy current page as LLM-friendly format using Jina Reader API
 // @author       Kouni
 // @match        *://*/*
@@ -39,7 +39,7 @@
         }
         
         isProcessing = true;
-        const currentUrl = window.location.href;
+        const currentUrl = window.top.location.href;
         
         showNotification('🔄 Converting page...', 'info');
         logDebug('Starting conversion for URL:', currentUrl);
