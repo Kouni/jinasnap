@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Jina Reader - Copy LLM Format
 // @namespace    https://github.com/kouni/jinasnap
-// @version      2.1.5
+// @version      2.1.6
 // @description  Copy current page as LLM-friendly format using Jina Reader API
 // @author       Kouni
 // @match        *://*/*
@@ -20,13 +20,60 @@
         TIMEOUT: 30000,
         NOTIFICATION_DURATION: 3000,
         FADE_DURATION: 300,
-        MIN_CONTENT_LENGTH: 10
+        MIN_CONTENT_LENGTH: 10,
+        REJECT_PATTERNS: [
+            'page not found',
+            'error 404',
+            'error 403',
+            'error 500',
+            'access denied',
+            'unauthorized',
+            'forbidden',
+            'protected by recaptcha',
+            'captcha verification required',
+            'please verify you are human',
+            'authentication required',
+            'login required'
+        ]
     };
     
     // State management
     let isProcessing = false;
     let currentNotification = null;
     
+    // Inject CSS styles
+    function injectStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .jina-reader-notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10000;
+                padding: 12px 16px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                transition: opacity ${CONFIG.FADE_DURATION}ms ease;
+                opacity: 1;
+            }
+            .jina-reader-notification.jina-reader-success {
+                background: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+            }
+            .jina-reader-notification.jina-reader-error {
+                background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+            }
+            .jina-reader-notification.jina-reader-warning {
+                background: #fff3cd; color: #856404; border: 1px solid #ffeaa7;
+            }
+            .jina-reader-notification.jina-reader-info {
+                background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     // Register menu command
     GM_registerMenuCommand('📄 Copy as LLM Format', copyCurrentPage);
     
@@ -107,22 +154,7 @@
         }
         
         // Only reject obvious error/protected pages
-        const rejectPatterns = [
-            'page not found',
-            'error 404',
-            'error 403', 
-            'error 500',
-            'access denied',
-            'unauthorized',
-            'forbidden',
-            'protected by recaptcha',
-            'captcha verification required',
-            'please verify you are human',
-            'authentication required',
-            'login required'
-        ];
-        
-        for (const pattern of rejectPatterns) {
+        for (const pattern of CONFIG.REJECT_PATTERNS) {
             if (lowerContent.includes(pattern)) {
                 return false;
             }
@@ -149,20 +181,7 @@
         }
         
         const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            opacity: 1;
-            ${getNotificationStyles(type)}
-        `;
+        notification.className = `jina-reader-notification jina-reader-${type}`;
         notification.textContent = message;
         document.body.appendChild(notification);
         
@@ -185,17 +204,6 @@
         }, CONFIG.NOTIFICATION_DURATION);
     }
     
-    // Get notification styles based on type
-    function getNotificationStyles(type) {
-        const styles = {
-            success: 'background: #d4edda; color: #155724; border: 1px solid #c3e6cb;',
-            error: 'background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;',
-            warning: 'background: #fff3cd; color: #856404; border: 1px solid #ffeaa7;',
-            info: 'background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb;'
-        };
-        return styles[type] || styles.info;
-    }
-    
     // Keyboard shortcut (Ctrl/Cmd + Shift + R)
     document.addEventListener('keydown', function(e) {
         if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'R') {
@@ -203,4 +211,7 @@
             copyCurrentPage();
         }
     });
+
+    // Initialize
+    injectStyles();
 })();
