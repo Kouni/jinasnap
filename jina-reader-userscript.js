@@ -4,6 +4,7 @@
 // @version      2.1.6
 // @description  Copy current page as LLM-friendly format using Jina Reader API
 // @author       Kouni
+// @license      GPL-2.0-or-later
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setClipboard
